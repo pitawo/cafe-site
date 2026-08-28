@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
+import logo from '../assets/logo.png';
 import { useAuth } from '../context/AuthContext';
 import { useShop } from '../context/ShopContext';
-import { ShoppingBag, User, Coffee } from 'lucide-react';
+import { ShoppingBag, User } from 'lucide-react';
 
 const Navbar = () => {
     const { user, logout } = useAuth();
@@ -20,7 +21,7 @@ const Navbar = () => {
             zIndex: 100
         }}>
             <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.25rem', fontWeight: 'bold', color: 'var(--color-brand-primary)' }}>
-                <Coffee size={24} />
+                <img src={logo} alt="" width="28" height="28" style={{ display: 'block' }} />
                 <span>Cafe Site</span>
             </Link>
 
