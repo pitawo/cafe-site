@@ -21,7 +21,7 @@ const Navbar = () => {
             zIndex: 100
         }}>
             <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.25rem', fontWeight: 'bold', color: 'var(--color-brand-primary)' }}>
-                <img src={logo} alt="" width="28" height="28" style={{ display: 'block' }} />
+                <img src={logo} alt="" width="36" height="36" style={{ display: 'block' }} />
                 <span>Cafe Site</span>
             </Link>
 
