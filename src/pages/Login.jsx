@@ -7,7 +7,9 @@ const Login = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
-    const from = location.state?.from || '/menu';
+    // サインイン前にいた画面に戻す。直接 /login を開いた場合はトップへ。
+    // 「サインインしたら自動でメニューに飛ぶ」動きはしない。
+    const from = location.state?.from || '/';
 
     // 入力は任意。空のままでも進める（デモの流れを止めないため）
     const handleSubmit = (e) => {

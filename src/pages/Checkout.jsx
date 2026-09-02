@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useShop } from '../context/ShopContext';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
+import { formatYen } from '../utils/currency';
+import { generateOrderNumber } from '../utils/orderNumber';
 
 // 決済フォームに最初から入れておくダミー。
 // 訪問者が実在のカード番号を打ち込む余地をなくすため、入力欄は読み取り専用にする。
@@ -34,18 +36,20 @@ const Checkout = () => {
         );
     }
 
-    const tax = cartTotal * 0.1;
-    const shipping = form.method === 'delivery' ? 3.0 : 0;
+    // 消費税は円未満を切り捨て（一般的な税額計算の端数処理に合わせる）
+    const tax = Math.floor(cartTotal * 0.1);
+    const shipping = form.method === 'delivery' ? 300 : 0;
     const total = cartTotal + tax + shipping;
 
     const handleSubmit = (e) => {
         e.preventDefault();
         setProcessing(true);
+        const orderNumber = generateOrderNumber();
         // 決済にかかる待ち時間を再現する。外部への通信はしていない
         setTimeout(() => {
             clearCart();
             navigate('/success', {
-                state: { name: form.name, method: form.method, total: total.toFixed(2) },
+                state: { name: form.name, method: form.method, total, orderNumber },
             });
         }, 1400);
     };
@@ -76,19 +80,19 @@ const Checkout = () => {
                 {cartItems.map((item) => (
                     <div key={item.id} style={row}>
                         <span>{item.name} × {item.quantity}</span>
-                        <span>${(item.price * item.quantity).toFixed(2)}</span>
+                        <span>{formatYen(item.price * item.quantity)}</span>
                     </div>
                 ))}
                 <hr style={{ border: 0, borderTop: '1px solid var(--color-border)', margin: '0.6rem 0' }} />
-                <div style={row}><span>小計</span><span>${cartTotal.toFixed(2)}</span></div>
-                <div style={row}><span>消費税（10%）</span><span>${tax.toFixed(2)}</span></div>
+                <div style={row}><span>小計</span><span>{formatYen(cartTotal)}</span></div>
+                <div style={row}><span>消費税（10%）</span><span>{formatYen(tax)}</span></div>
                 <div style={row}>
                     <span>配送料</span>
-                    <span>{shipping === 0 ? '無料（店頭受け取り）' : `$${shipping.toFixed(2)}`}</span>
+                    <span>{shipping === 0 ? '無料（店頭受け取り）' : formatYen(shipping)}</span>
                 </div>
                 <hr style={{ border: 0, borderTop: '1px solid var(--color-border)', margin: '0.6rem 0' }} />
                 <div style={{ ...row, fontWeight: 700, fontSize: '1.05rem' }}>
-                    <span>合計</span><span>${total.toFixed(2)}</span>
+                    <span>合計</span><span>{formatYen(total)}</span>
                 </div>
             </section>
 
@@ -114,7 +118,7 @@ const Checkout = () => {
                                 style={input}
                             >
                                 <option value="pickup">店頭で受け取る（配送料無料）</option>
-                                <option value="delivery">配達してもらう（+$3.00）</option>
+                                <option value="delivery">配達してもらう（+¥300）</option>
                             </select>
                         </label>
                         <label style={field}>
@@ -157,7 +161,7 @@ const Checkout = () => {
                 </section>
 
                 <button type="submit" className="btn btn-primary" disabled={processing} style={{ width: '100%' }}>
-                    {processing ? '決済処理中…' : `$${total.toFixed(2)} を支払う`}
+                    {processing ? '決済処理中…' : `${formatYen(total)} を支払う`}
                 </button>
             </form>
         </div>

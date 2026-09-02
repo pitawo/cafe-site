@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { useAuth } from '../context/AuthContext';
 import { useShop } from '../context/ShopContext';
@@ -7,6 +7,7 @@ import { ShoppingBag, User } from 'lucide-react';
 const Navbar = () => {
     const { user, logout } = useAuth();
     const { cartCount } = useShop();
+    const location = useLocation();
 
     return (
         <nav style={{
@@ -22,13 +23,13 @@ const Navbar = () => {
         }}>
             <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.25rem', fontWeight: 'bold', color: 'var(--color-brand-primary)' }}>
                 <img src={logo} alt="" width="36" height="36" style={{ display: 'block' }} />
-                <span>Cafe Site</span>
+                <span>カフェサイト</span>
             </Link>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
                 <div style={{ display: 'flex', gap: '1.5rem' }}>
-                    <Link to="/" style={{ fontWeight: 500 }}>Home</Link>
-                    <Link to="/menu" style={{ fontWeight: 500 }}>Menu</Link>
+                    <Link to="/" style={{ fontWeight: 500 }}>ホーム</Link>
+                    <Link to="/menu" style={{ fontWeight: 500 }}>メニュー</Link>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -59,12 +60,17 @@ const Navbar = () => {
                             <User size={24} />
                             <span style={{ fontSize: '0.875rem' }}>{user.name}</span>
                             <button onClick={logout} className="btn-outline" style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem' }}>
-                                Logout
+                                ログアウト
                             </button>
                         </div>
                     ) : (
-                        <Link to="/login" className="btn btn-primary" style={{ padding: '0.5rem 1rem' }}>
-                            Sign In
+                        <Link
+                            to="/login"
+                            state={{ from: location.pathname }}
+                            className="btn btn-primary"
+                            style={{ padding: '0.5rem 1rem' }}
+                        >
+                            サインイン
                         </Link>
                     )}
                 </div>

@@ -1,0 +1,13 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="クロワッサンのイラスト">
+  <circle cx="100" cy="100" r="90" fill="#d4e9e2"/>
+  <ellipse cx="100" cy="140" rx="70" ry="14" fill="#ffffff" stroke="#006241" stroke-width="3"/>
+
+  <!-- 三日月形（円を欠けさせて作る） -->
+  <circle cx="90" cy="95" r="55" fill="#cba258" fill-opacity="0.35" stroke="#006241" stroke-width="3"/>
+  <circle cx="122" cy="70" r="48" fill="#d4e9e2"/>
+
+  <!-- 層のリッジ -->
+  <path d="M62,70 Q48,100 68,128" fill="none" stroke="#006241" stroke-width="2" stroke-linecap="round"/>
+  <path d="M75,64 Q58,100 85,132" fill="none" stroke="#006241" stroke-width="2" stroke-linecap="round"/>
+  <path d="M90,60 Q70,98 103,134" fill="none" stroke="#006241" stroke-width="2" stroke-linecap="round"/>
+</svg>

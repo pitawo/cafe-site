@@ -1,0 +1,22 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ブルーベリーマフィンのイラスト">
+  <circle cx="100" cy="100" r="90" fill="#d4e9e2"/>
+  <ellipse cx="100" cy="140" rx="70" ry="14" fill="#ffffff" stroke="#006241" stroke-width="3"/>
+
+  <!-- 紙カップ -->
+  <path d="M75,130 L125,130 L138,95 L62,95 Z" fill="#ffffff" stroke="#006241" stroke-width="3" stroke-linejoin="round"/>
+  <line x1="82" y1="129" x2="72" y2="96" stroke="#006241" stroke-width="1.5"/>
+  <line x1="91" y1="129" x2="86" y2="96" stroke="#006241" stroke-width="1.5"/>
+  <line x1="100" y1="129" x2="100" y2="96" stroke="#006241" stroke-width="1.5"/>
+  <line x1="109" y1="129" x2="114" y2="96" stroke="#006241" stroke-width="1.5"/>
+  <line x1="118" y1="129" x2="128" y2="96" stroke="#006241" stroke-width="1.5"/>
+
+  <!-- 膨らんだ上面 -->
+  <path d="M55,97 C55,70 80,55 100,55 C120,55 145,70 145,97 C130,90 70,90 55,97 Z" fill="#cba258" fill-opacity="0.4" stroke="#006241" stroke-width="3" stroke-linejoin="round"/>
+
+  <!-- ブルーベリー -->
+  <circle cx="78" cy="68" r="4" fill="#1e3932"/>
+  <circle cx="100" cy="62" r="4" fill="#1e3932"/>
+  <circle cx="122" cy="70" r="4" fill="#1e3932"/>
+  <circle cx="88" cy="80" r="3.5" fill="#1e3932"/>
+  <circle cx="112" cy="82" r="3.5" fill="#1e3932"/>
+</svg>

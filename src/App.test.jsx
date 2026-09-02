@@ -17,17 +17,17 @@ const renderApp = (path = '/') =>
         </AuthProvider>
     );
 
-/** 先頭の商品（Caffe Latte $4.50）をカートに入れる */
+/** 先頭の商品（カフェラテ・デフォルトサイズ M・¥500）をカートに入れる */
 const addLatte = async (user, count = 1) => {
-    const buttons = await screen.findAllByRole('button', { name: /add to cart/i });
+    const buttons = await screen.findAllByRole('button', { name: /カートに追加/ });
     for (let i = 0; i < count; i++) await user.click(buttons[0]);
 };
 
 /** メニュー → カート → 決済画面まで進む */
 const goToCheckout = async (user, count = 2) => {
     await addLatte(user, count);
-    await user.click(screen.getByRole('link', { name: /カート/ }));
-    await user.click(await screen.findByRole('link', { name: /Proceed to Checkout/i }));
+    await user.click(screen.getByRole('link', { name: /^カート（/ }));
+    await user.click(await screen.findByRole('link', { name: /お支払いへ進む/ }));
 };
 
 beforeEach(() => {
@@ -37,8 +37,15 @@ beforeEach(() => {
 describe('トップページ', () => {
     it('見出しと導線が出る', () => {
         renderApp('/');
-        expect(screen.getByText(/Welcome to Cafe Site/i)).toBeInTheDocument();
-        expect(screen.getByText(/Order Now/i)).toBeInTheDocument();
+        expect(screen.getByText(/カフェサイトへようこそ/)).toBeInTheDocument();
+        expect(screen.getByText(/メニューを見る/)).toBeInTheDocument();
+    });
+
+    it('お知らせと営業時間が出る（架空のデモ用と明記されている）', () => {
+        renderApp('/');
+        expect(screen.getByRole('heading', { name: 'お知らせ' })).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: '営業時間' })).toBeInTheDocument();
+        expect(screen.getByText(/実在のカフェ・店舗ではありません/)).toBeInTheDocument();
     });
 });
 
@@ -47,7 +54,7 @@ describe('カート', () => {
         const user = userEvent.setup();
         renderApp('/menu');
         await addLatte(user, 2);
-        expect(screen.getByRole('link', { name: /カート/ })).toHaveTextContent('2');
+        expect(screen.getByRole('link', { name: /^カート（/ })).toHaveTextContent('2');
     });
 
     it('追加した内容がブラウザに保存される（読み込み直しても消えない）', async () => {
@@ -65,25 +72,40 @@ describe('カート', () => {
         expect(screen.getByText(/カートに商品がありません/)).toBeInTheDocument();
         expect(screen.queryByRole('button', { name: /を支払う/ })).not.toBeInTheDocument();
     });
+
+    it('ドリンクはサイズを選べて、選んだサイズで金額が変わる', async () => {
+        const user = userEvent.setup();
+        renderApp('/menu');
+
+        // 先頭の商品（カフェラテ）を L サイズに変更してから追加する
+        const sizeButtons = await screen.findAllByRole('button', { name: 'L' });
+        await user.click(sizeButtons[0]);
+        const addButtons = screen.getAllByRole('button', { name: /カートに追加/ });
+        await user.click(addButtons[0]);
+
+        await user.click(screen.getByRole('link', { name: /^カート（/ }));
+        // S 基準 ¥450 + L 加算 ¥100 = ¥550
+        expect(screen.getByText('¥550')).toBeInTheDocument();
+        expect(screen.getByText(/カフェラテ（L）/)).toBeInTheDocument();
+    });
 });
 
 describe('決済画面', () => {
     it('小計・消費税・合計を計算して出す', async () => {
         const user = userEvent.setup();
         renderApp('/menu');
-        await goToCheckout(user, 2); // $4.50 × 2 = $9.00
+        await goToCheckout(user, 2); // ¥500（M） × 2 = ¥1,000
 
-        // $9.00 は明細と小計の2か所に出るので、行を特定して確かめる
         const subtotal = (await screen.findByText('小計')).closest('div');
-        expect(subtotal).toHaveTextContent('$9.00');
+        expect(subtotal).toHaveTextContent('¥1,000');
 
         const taxRow = screen.getByText(/消費税/).closest('div');
-        expect(taxRow).toHaveTextContent('$0.90');
+        expect(taxRow).toHaveTextContent('¥100');
 
         const totalRow = screen.getByText('合計').closest('div');
-        expect(totalRow).toHaveTextContent('$9.90');
+        expect(totalRow).toHaveTextContent('¥1,100');
 
-        expect(screen.getByRole('button', { name: /\$9\.90 を支払う/ })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /¥1,100 を支払う/ })).toBeInTheDocument();
     });
 
     it('配達を選ぶと配送料が加算される', async () => {
@@ -92,8 +114,8 @@ describe('決済画面', () => {
         await goToCheckout(user, 2);
 
         await user.selectOptions(screen.getByLabelText(/受け取り方法/), 'delivery');
-        // 9.00 + 0.90 + 3.00 = 12.90
-        expect(await screen.findByRole('button', { name: /\$12\.90 を支払う/ })).toBeInTheDocument();
+        // 1,000 + 100 + 300 = 1,400
+        expect(await screen.findByRole('button', { name: /¥1,400 を支払う/ })).toBeInTheDocument();
     });
 
     it('カード情報は読み取り専用で、打ち込んでも変わらない', async () => {
@@ -109,7 +131,7 @@ describe('決済画面', () => {
         expect(cardNumber.value).toBe(before);
     });
 
-    it('支払うとカートが空になり、完了画面に金額が出る', async () => {
+    it('支払うとカートが空になり、完了画面に金額と受付番号が出る', async () => {
         const user = userEvent.setup();
         renderApp('/menu');
         await goToCheckout(user, 2);
@@ -119,7 +141,8 @@ describe('決済画面', () => {
 
         expect(await screen.findByText(/ご注文ありがとうございます/, {}, { timeout: 3000 })).toBeInTheDocument();
         expect(screen.getByText(/テスト太郎/)).toBeInTheDocument();
-        expect(screen.getByText(/\$9\.90/)).toBeInTheDocument();
+        expect(screen.getByText(/¥1,100/)).toBeInTheDocument();
+        expect(screen.getByText(/受付番号: DEMO-\d{8}-\d{4}/)).toBeInTheDocument();
         expect(JSON.parse(localStorage.getItem('cafe-site/cart') || '[]')).toHaveLength(0);
     });
 });
@@ -129,11 +152,34 @@ describe('サインイン', () => {
         const user = userEvent.setup();
         renderApp('/login');
         await user.click(screen.getByRole('button', { name: /サインインして続ける/ }));
-        expect(await screen.findByText(/Our Menu/i)).toBeInTheDocument();
+        // from の指定がないときはトップに戻る（メニューへ自動遷移はしない）
+        expect(await screen.findByText(/カフェサイトへようこそ/)).toBeInTheDocument();
+    });
+
+    it('サインインすると元いた画面に戻る（自動でメニューには飛ばない）', async () => {
+        const user = userEvent.setup();
+        renderApp('/menu');
+        await user.click(screen.getByRole('link', { name: 'サインイン' }));
+        await user.click(screen.getByRole('button', { name: /サインインして続ける/ }));
+        expect(await screen.findByRole('heading', { level: 1, name: 'メニュー' })).toBeInTheDocument();
     });
 
     it('パスワードの入力欄を持たない', () => {
         const { container } = renderApp('/login');
         expect(container.querySelector('input[type="password"]')).toBeNull();
+    });
+});
+
+describe('カート導線ボタン（画面右下固定）', () => {
+    it('カートが空のときは出ない', () => {
+        renderApp('/');
+        expect(screen.queryByRole('link', { name: /カートを見る/ })).not.toBeInTheDocument();
+    });
+
+    it('カートに追加すると出て、件数バッジが増える', async () => {
+        const user = userEvent.setup();
+        renderApp('/menu');
+        await addLatte(user, 2);
+        expect(screen.getByRole('link', { name: /カートを見る（2点）/ })).toBeInTheDocument();
     });
 });

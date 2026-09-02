@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import FloatingCartButton from './components/FloatingCartButton';
 import Home from './pages/Home';
 import Menu from './pages/Menu';
 import Login from './pages/Login';
@@ -21,6 +22,7 @@ function App() {
           <Route path="/success" element={<Success />} />
         </Routes>
       </main>
+      <FloatingCartButton />
       <footer style={{
         textAlign: 'center',
         padding: '2rem',
@@ -29,7 +31,7 @@ function App() {
         fontSize: '0.875rem',
         color: 'var(--color-text-secondary)'
       }}>
-        © 2025 Cafe Site. All rights reserved.
+        © 2025 カフェサイト（本サイトはポートフォリオ用のデモです）
       </footer>
     </div>
   );

@@ -1,0 +1,17 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="パンケーキのイラスト">
+  <circle cx="100" cy="100" r="90" fill="#d4e9e2"/>
+  <ellipse cx="100" cy="140" rx="78" ry="15" fill="#ffffff" stroke="#006241" stroke-width="3"/>
+
+  <ellipse cx="100" cy="128" rx="58" ry="13" fill="#cba258" fill-opacity="0.5" stroke="#006241" stroke-width="3"/>
+  <ellipse cx="100" cy="108" rx="52" ry="12" fill="#cba258" fill-opacity="0.5" stroke="#006241" stroke-width="3"/>
+  <ellipse cx="100" cy="88" rx="52" ry="12" fill="#cba258" fill-opacity="0.5" stroke="#006241" stroke-width="3"/>
+
+  <!-- バター -->
+  <rect x="90" y="72" width="20" height="12" rx="2" fill="#ffffff" stroke="#006241" stroke-width="2"/>
+
+  <!-- 垂れるシロップ -->
+  <path d="M70,86 C68,96 74,106 70,120" fill="none" stroke="#1e3932" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="70" cy="122" r="2.5" fill="#1e3932"/>
+  <path d="M130,86 C132,96 126,106 130,120" fill="none" stroke="#1e3932" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="130" cy="122" r="2.5" fill="#1e3932"/>
+</svg>

@@ -1,0 +1,18 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ガトーショコラのイラスト">
+  <circle cx="100" cy="100" r="90" fill="#d4e9e2"/>
+  <ellipse cx="100" cy="140" rx="70" ry="14" fill="#ffffff" stroke="#006241" stroke-width="3"/>
+
+  <!-- 断面（背面が垂直、底が水平、前面だけが斜めのくさび形。濃色のチョコレート生地） -->
+  <path d="M55,50 L55,130 L145,130 Z" fill="#1e3932" stroke="#006241" stroke-width="3" stroke-linejoin="round"/>
+
+  <!-- ツヤのドリズル -->
+  <path d="M62,92 Q88,75 108,98 Q120,112 132,124" fill="none" stroke="#cba258" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- 粉糖 -->
+  <circle cx="75" cy="100" r="2" fill="#ffffff"/>
+  <circle cx="65" cy="65" r="1.6" fill="#ffffff"/>
+  <circle cx="105" cy="105" r="2" fill="#ffffff"/>
+  <circle cx="65" cy="115" r="1.8" fill="#ffffff"/>
+  <circle cx="125" cy="115" r="2" fill="#ffffff"/>
+  <circle cx="60" cy="55" r="1.4" fill="#ffffff"/>
+</svg>

@@ -1,5 +1,6 @@
 import { useShop } from '../context/ShopContext';
 import { Link } from 'react-router-dom';
+import { formatYen } from '../utils/currency';
 
 const Cart = () => {
     const { cartItems, removeFromCart, updateQuantity, cartTotal } = useShop();
@@ -7,15 +8,15 @@ const Cart = () => {
     if (cartItems.length === 0) {
         return (
             <div className="container text-center" style={{ padding: 'var(--spacing-xl) 0' }}>
-                <h1>Your Cart is Empty</h1>
-                <Link to="/menu" className="btn btn-primary mt-4">Browse Menu</Link>
+                <h1>カートに商品がありません</h1>
+                <Link to="/menu" className="btn btn-primary mt-4">メニューを見る</Link>
             </div>
         );
     }
 
     return (
         <div className="container" style={{ padding: 'var(--spacing-lg) 0' }}>
-            <h1>Your Cart</h1>
+            <h1>カート</h1>
             <div style={{ marginTop: 'var(--spacing-md)' }}>
                 {cartItems.map((item) => (
                     <div key={item.id} style={{
@@ -27,7 +28,7 @@ const Cart = () => {
                     }}>
                         <div>
                             <h3>{item.name}</h3>
-                            <p>${item.price.toFixed(2)}</p>
+                            <p>{formatYen(item.price)}</p>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-sm)' }}>
                             <button
@@ -42,13 +43,13 @@ const Cart = () => {
                             <button
                                 onClick={() => removeFromCart(item.id)}
                                 style={{ marginLeft: 'var(--spacing-md)', color: 'red' }}
-                            >Remove</button>
+                            >削除</button>
                         </div>
                     </div>
                 ))}
                 <div style={{ marginTop: 'var(--spacing-lg)', textAlign: 'right' }}>
-                    <h2>Total: ${cartTotal.toFixed(2)}</h2>
-                    <Link to="/checkout" className="btn btn-primary mt-4">Proceed to Checkout</Link>
+                    <h2>合計: {formatYen(cartTotal)}</h2>
+                    <Link to="/checkout" className="btn btn-primary mt-4">お支払いへ進む</Link>
                 </div>
             </div>
         </div>

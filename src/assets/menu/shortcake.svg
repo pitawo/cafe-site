@@ -1,0 +1,17 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ショートケーキのイラスト">
+  <circle cx="100" cy="100" r="90" fill="#d4e9e2"/>
+  <ellipse cx="100" cy="140" rx="70" ry="14" fill="#ffffff" stroke="#006241" stroke-width="3"/>
+
+  <!-- ケーキ断面（背面が垂直、底が水平、前面だけが斜め。上は生クリームの絞りで丸くとじる） -->
+  <path d="M55,130 L145,130 L124,105 L55,105 Z" fill="#cba258" fill-opacity="0.45"/>
+  <path d="M55,105 L124,105 L95,70 L55,70 Z" fill="#ffffff"/>
+  <path d="M55,70 L55,130 L145,130 L95,70 Z" fill="none" stroke="#006241" stroke-width="3" stroke-linejoin="round"/>
+  <line x1="55" y1="105" x2="124" y2="105" stroke="#006241" stroke-width="2"/>
+
+  <!-- 生クリームの絞り -->
+  <path d="M55,70 Q63,54 73,70 Q81,50 91,70 Z" fill="#ffffff" stroke="#006241" stroke-width="2.3" stroke-linejoin="round"/>
+
+  <!-- いちご -->
+  <path d="M75,32 C84,32 89,42 86,50 C83,57 77,60 75,60 C73,60 67,57 64,50 C61,42 66,32 75,32 Z" fill="#ffffff" stroke="#006241" stroke-width="2.2"/>
+  <path d="M65,33 Q69,27 73,33 Q77,26 81,33 Q85,27 89,33" fill="none" stroke="#1e3932" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
